@@ -29,7 +29,7 @@ public class Solution {
 	static int dy[] = { 0, 1, 0, -1 };
 	static boolean[][] visited;
 
-	private static void findRoute(int x, int y, int cnt, int num, int k) {
+	private static void findRoute(int x, int y, int cnt, int num, int depth) {
 		if (cnt > ans) {
 			ans = cnt;
 		}
@@ -42,14 +42,14 @@ public class Solution {
 				continue;
 			if (map[nx][ny] < num) {
 				visited[nx][ny] = true;
-				findRoute(nx, ny, cnt + 1, map[nx][ny], k);
+				findRoute(nx, ny, cnt + 1, map[nx][ny], depth);
 				visited[nx][ny] = false;
 			} else {
-				if (k == 0) {
+				if (depth == 0) {
 					for (int j = 1; j <= K; j++) {
 						if (map[nx][ny] - j < num) {
 							visited[nx][ny] = true;
-							findRoute(nx, ny, cnt + 1, map[nx][ny] - j, k + 1);
+							findRoute(nx, ny, cnt + 1, map[nx][ny] - j, depth + 1);
 							visited[nx][ny] = false;
 						}
 					}
@@ -87,9 +87,11 @@ public class Solution {
 				}
 			}
 			for (int i = 0; i < high.size(); i++) {
-				visited[high.get(i).x][high.get(i).y] = true;
-				findRoute(high.get(i).x, high.get(i).y, 1, map[high.get(i).x][high.get(i).y], 0);
-				visited[high.get(i).x][high.get(i).y] = false;
+				int x = high.get(i).x;
+				int y = high.get(i).y;
+				visited[x][y] = true;
+				findRoute(x, y, 1, map[x][y], 0);
+				visited[x][y] = false;
 			}
 			System.out.println("#" + TC + " " + ans);
 
