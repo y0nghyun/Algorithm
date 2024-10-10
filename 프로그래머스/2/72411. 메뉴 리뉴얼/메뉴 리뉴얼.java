@@ -6,7 +6,7 @@ class Solution {
     static int[] topNum;
     static char[] isSelected;
     
-    public String[] solution(String[] orders, int[] course) {
+    public ArrayList solution(String[] orders, int[] course) {
         list = new HashMap();
         topNum = new int[11];
         ArrayList<String> temp = new ArrayList();
@@ -28,7 +28,7 @@ class Solution {
             answer[i] = temp.get(i);
         }
 
-        return answer;
+        return temp;
     }
     
     public void combi(int idx, int start, int limit, String target){
