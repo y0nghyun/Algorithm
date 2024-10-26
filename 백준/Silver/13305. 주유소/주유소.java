@@ -6,37 +6,33 @@ import java.util.StringTokenizer;
 public class Main {
 
 	static int N;
-	static int[] cost;
-	static int[] price;
-	static int[] total;
+	static long[] dist;
+	static long[] price;
+	static long total;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 
-		cost = new int[N - 1];
+		dist = new long[N - 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N - 1; i++) {
-			cost[i] = Integer.parseInt(st.nextToken());
+			dist[i] = Long.parseLong(st.nextToken());
 		}
 
-		price = new int[N];
+		price = new long[N];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
-			price[i] = Integer.parseInt(st.nextToken());
+			price[i] = Long.parseLong(st.nextToken());
 		}
 
-		total = new int[N];
-		total[0] = 0;
-		total[1] = cost[0] * price[0];
-		for (int i = 2; i < N; i++) {
-			int minPrice = Integer.MAX_VALUE;
-			for (int j = i - 1; j >= 0; j--) {
-				minPrice = Math.min(minPrice, price[j]);
-			}
-			total[i] = total[i - 1] + minPrice * cost[i - 1];
+		long minPrice = price[0];
+		total = 0;
+		for (int i = 0; i < N - 1; i++) {
+			minPrice = Math.min(minPrice, price[i]);
+			total += minPrice * dist[i];
 		}
-		System.out.println(total[N - 1]);
+		System.out.println(total);
 	}
 
 }
