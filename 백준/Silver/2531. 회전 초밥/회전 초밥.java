@@ -1,20 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	static int n;
-	static int d;
-	static int k;
-	static int c;
-
-	// 전체 초밥 리스트
-	static int[] belt;
-	// 이미 먹은 초밥인지 여부
-	static boolean[] isEaten;
+	static int n, d, k, c;
+	static int[] belt; // 전체 초밥 리스트
+	static int[] isEaten; // 초밥 카운트
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,35 +19,46 @@ public class Main {
 		c = Integer.parseInt(st.nextToken());
 
 		belt = new int[n];
-		isEaten = new boolean[d + 1];
+		isEaten = new int[d + 1];
 		for (int i = 0; i < n; i++) {
 			belt[i] = Integer.parseInt(br.readLine());
 		}
 
 		int max = 0;
-		// 접시 개수만큼
-		for (int i = 0; i < n; i++) {
-			int cnt = 0;
-			// 연속해서 먹는 접시의 수만큼
-			for (int j = 0; j < k; j++) {
-				int temp = i + j;
-				// 만약 배열을 벗어나면 다시 앞으로
-				if (temp >= n)
-					temp -= n;
-				// 아직 먹지 않은 초밥이라면 개수 ++ , 먹었다고 체크
-				if (!isEaten[belt[temp]]) {
-					cnt++;
-					isEaten[belt[temp]] = true;
-				}
-			}
-			// 쿠폰 사용
-			if (!isEaten[c])
+		int cnt = 0;
+
+		// 초기 윈도우 설정
+		for (int i = 0; i < k; i++) {
+			if (isEaten[belt[i]] == 0) {
 				cnt++;
-			max = Math.max(cnt, max);
-			// 먹었는지 여부 초기화
-			Arrays.fill(isEaten, false);
+			}
+			isEaten[belt[i]]++;
 		}
+
+		// 쿠폰 확인
+		max = (isEaten[c] == 0) ? cnt + 1 : cnt;
+
+		// 슬라이딩 윈도우
+		for (int i = 1; i < n; i++) {
+			// 새로 추가되는 초밥
+			int newSushi = belt[(i + k - 1) % n];
+			if (isEaten[newSushi] == 0) {
+				cnt++;
+			}
+			isEaten[newSushi]++;
+
+			// 제거되는 초밥
+			int removeSushi = belt[i - 1];
+			isEaten[removeSushi]--;
+			if (isEaten[removeSushi] == 0) {
+				cnt--;
+			}
+
+			// 쿠폰 확인
+			int temp = (isEaten[c] == 0) ? cnt + 1 : cnt;
+			max = Math.max(max, temp);
+		}
+
 		System.out.println(max);
 	}
-
 }
