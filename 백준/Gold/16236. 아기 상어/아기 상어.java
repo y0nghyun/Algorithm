@@ -59,7 +59,7 @@ public class Main {
 		}
 
 		while (true) {
-			Point fish = findFish(shark); // 먹을 물고기 위치 찾기
+			Point fish = findFish(); // 먹을 물고기 위치 찾기
 			if (fish == null) // 없으면 끝
 				break;
 
@@ -79,7 +79,7 @@ public class Main {
 		System.out.println(ans);
 	}
 
-	private static Point findFish(Point shark) {
+	private static Point findFish() {
 		Queue<Point> queue = new ArrayDeque<>();
 		visited = new boolean[N][N];
 
