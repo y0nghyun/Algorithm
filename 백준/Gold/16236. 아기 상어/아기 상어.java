@@ -18,7 +18,7 @@ public class Main {
 			this.dist = dist;
 		}
 
-		@Override
+		@Override // 우선순위 물고기를 정하기 위한
 		public int compareTo(Point o) {
 			if (this.dist == o.dist) {
 				if (this.x == o.x) {
@@ -33,8 +33,9 @@ public class Main {
 	static int N;
 	static int[][] graph;
 	static boolean[][] visited;
-	static int fishSize = 2;
-	static int eatenFish = 0;
+	static Point shark;
+	static int fishSize = 2; // 초기 물고기 크기
+	static int eatenFish = 0; // 먹은 물고기 개수
 	static int ans = 0;
 
 	static int[] dx = { -1, 0, 1, 0 };
@@ -46,28 +47,28 @@ public class Main {
 		N = Integer.parseInt(br.readLine());
 		graph = new int[N][N];
 
-		Point shark = null;
-
 		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
 				graph[i][j] = Integer.parseInt(st.nextToken());
 				if (graph[i][j] == 9) {
 					shark = new Point(i, j, 0);
-					graph[i][j] = 0;
+					graph[i][j] = 0; // 현재 물고기 자리를 초기화
 				}
 			}
 		}
 
 		while (true) {
-			Point fish = findFish(shark);
-			if (fish == null)
+			Point fish = findFish(shark); // 먹을 물고기 위치 찾기
+			if (fish == null) // 없으면 끝
 				break;
 
-			ans += fish.dist;
+			// 거리 계산 후 상어 위치 변경
+			ans += fish.dist; 
 			shark = new Point(fish.x, fish.y, 0);
 			graph[fish.x][fish.y] = 0;
 
+			// 물고기 사이즈 변경
 			eatenFish++;
 			if (eatenFish == fishSize) {
 				fishSize++;
@@ -85,6 +86,7 @@ public class Main {
 		queue.add(new Point(shark.x, shark.y, 0));
 		visited[shark.x][shark.y] = true;
 
+		// 가능한 물고기를 넣어줄 리스트
 		ArrayList<Point> fishes = new ArrayList<>();
 
 		while (!queue.isEmpty()) {
