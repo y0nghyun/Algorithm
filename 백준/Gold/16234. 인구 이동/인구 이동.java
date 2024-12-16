@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -25,6 +24,7 @@ public class Main {
 	static int[][] map;
 	static boolean[][] visited;
 	static boolean flag;
+	static Queue<Point> union;
 
 	static int ans;
 
@@ -32,10 +32,7 @@ public class Main {
 	static int[] dy = { 0, -1, 0, 1 };
 
 	private static void findUnion(Point cur) {
-		if (visited[cur.x][cur.y])
-			return;
 		Queue<Point> q = new ArrayDeque<>();
-		ArrayList<Point> union = new ArrayList<>();
 		int cnt = 0;
 		int sum = 0;
 
@@ -60,11 +57,15 @@ public class Main {
 				}
 			}
 		}
-		if (union.size() > 1)
+		if (union.size() > 1) {
 			flag = true; // 이동 여부 체크
-		int newPop = sum / cnt; // 연합 인구 수
-		for (Point p : union) {
-			map[p.x][p.y] = newPop;
+			int newPop = sum / cnt; // 연합 인구 수
+			while (!union.isEmpty()) {
+				Point temp = union.poll();
+				map[temp.x][temp.y] = newPop;
+			}
+		} else {
+			union.poll();
 		}
 	}
 
@@ -85,12 +86,14 @@ public class Main {
 		}
 
 		ans = 0;
+		union = new ArrayDeque<>();
 		while (true) {
 			flag = false;
 			visited = new boolean[N][N];
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
-					findUnion(new Point(i, j));
+					if (!visited[i][j]) // 방문하지 않은 경우만
+						findUnion(new Point(i, j));
 				}
 			}
 			if (!flag)
