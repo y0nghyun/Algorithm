@@ -17,6 +17,7 @@ public class Main {
 			N = Integer.parseInt(br.readLine());
 
 			sum = 0;
+            // 동전 최대 가능이 100000원
 			coins = new int[100001];
 
 			for (int i = 0; i < N; i++) {
@@ -32,10 +33,12 @@ public class Main {
 				continue;
 			}
 
+            // 한 명 꺼만 구하면 되니까
 			sum /= 2;
 			dp = new boolean[sum + 1];
 			dp[0] = true;
 
+            // 냅색
 			for (int i = 1; i <= sum; i++) {
 				if (coins[i] > 0) {
 					int coin = i;
