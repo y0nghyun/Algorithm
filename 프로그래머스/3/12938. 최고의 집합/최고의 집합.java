@@ -9,8 +9,7 @@ class Solution {
             return answer;
         }
         answer = new int[n];
-        double avg = s / n;
-        int num = (int) avg;
+        int num = s/n;
         
         int cnt = 0;
         for(int i=0; i<=n; i++){
