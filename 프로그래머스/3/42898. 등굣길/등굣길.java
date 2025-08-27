@@ -1,5 +1,4 @@
 class Solution {
-    static final int MOD = 1_000_000_007;
 
     public int solution(int m, int n, int[][] puddles) {
         int[][] dp = new int[n][m];
@@ -22,9 +21,9 @@ class Solution {
                     dp[i][j] = 0;
                     continue;
                 }
-                long up = (i > 0) ? dp[i - 1][j] : 0;
-                long left = (j > 0) ? dp[i][j - 1] : 0;
-                dp[i][j] = (int) ((up + left) % MOD);
+                int up = (i > 0) ? dp[i - 1][j] : 0;
+                int left = (j > 0) ? dp[i][j - 1] : 0;
+                dp[i][j] = (int) ((up + left) % 1000_000007);
             }
         }
 
